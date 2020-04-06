@@ -1,0 +1,9 @@
+.FullRecipe {
+  width: 60%;
+  margin: 50px auto;
+  text-align: left;
+}
+.FullRecipe img {
+  width: 100%;
+  height: 350px;
+}

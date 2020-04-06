@@ -1,0 +1,29 @@
+.Filter {
+  display: flex;
+  justify-content: space-between;
+  width: 98%;
+  background-color: blanchedalmond;
+  font-family: Montserrat;
+  color: #121212;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.GetRecipes {
+  width: 240px;
+  height: 37px;
+  font-size: 30px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.GetRecipes:hover {
+  cursor: pointer;
+  color: #db5a23;
+}
+
+.Category {
+  opacity: 0.5;
+  font-size: 13px;
+  letter-spacing: 1.9px;
+}

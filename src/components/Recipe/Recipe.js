@@ -19,11 +19,11 @@ const recipe = ({ id, title, image, clicked }) => (
   </div>
 );
 
-recipe.prototype = {
-  id: PropsTypes.string.isRequired,
+recipe.propTypes = {
+  id: PropsTypes.number.isRequired,
   title: PropsTypes.string.isRequired,
   image: PropsTypes.string.isRequired,
-  clicked: PropsTypes.string.isRequired,
+  clicked: PropsTypes.func.isRequired,
 }
 
 export default recipe;
