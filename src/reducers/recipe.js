@@ -9,7 +9,7 @@ const recipeReducer = (state = [], action) => {
       return {
         ...state,
         recipeError: action.recipeError,
-      }
+      };
     default:
       return state;
   }

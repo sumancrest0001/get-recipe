@@ -1,46 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Recipe from '../../components/Recipe/Recipe';
-import FullRecipe from '../FullRecipe/FullRecipe';
 import key from '../../config';
 import { storeRecipes, storeRecipesFail } from '../../action';
 import classes from './Recipes.module.css';
 
 class Recipes extends Component {
-  selectedRecipeHandler = (id) => {
-    // programmatic routing
-    this.props.history.push('/recipes/' + id);
-  }
-
-  changeReadyTime(time) {
-    if (time <= 15) {
-      return 'Veryfast';
-    }
-    if (time > 15 && time <= 30) {
-      return 'Fast';
-    }
-    if (time > 30 && time <= 60) {
-      return 'Normal';
-    }
-
-    if (time > 60 && time <= 120) {
-      return 'Long';
-    }
-
-    if (time > 120) {
-      return 'Verylong';
-    } else {
-      return time;
-    }
-
-  }
-
   componentDidMount() {
     const { APIrecipes, storeRecipesError } = this.props;
-    console.log(this.props);
     axios.get(`https://api.spoonacular.com/recipes/search?number=20&apiKey=${key}&query=foods`)
       .then(response => {
         const recipes = response.data.results;
@@ -57,6 +26,31 @@ class Recipes extends Component {
       });
   }
 
+  selectedRecipeHandler = id => {
+    const { history } = this.props;
+    history.push(`/recipes/${id}`);
+  }
+
+  changeReadyTime = time => {
+    if (time <= 15) {
+      return 'Veryfast';
+    }
+    if (time > 15 && time <= 30) {
+      return 'Fast';
+    }
+    if (time > 30 && time <= 60) {
+      return 'Normal';
+    }
+
+    if (time > 60 && time <= 120) {
+      return 'Long';
+    }
+
+    if (time > 120) {
+      return 'Verylong';
+    }
+    return time;
+  };
 
   filterRecipes = () => {
     const { recipes, filter, propsFilter } = this.props;
@@ -72,23 +66,21 @@ class Recipes extends Component {
 
   render() {
     const { recipes, recipesError } = this.props;
-    let finalRecipes = <p>Content is loading........</p>
+    let finalRecipes = <p>Content is loading........</p>;
     if (recipesError) {
       finalRecipes = <p>Something went wrong</p>;
     }
     if (recipes) {
       const allRecipes = this.filterRecipes();
-      finalRecipes = allRecipes.map(recipe => {
-        return (
-          <Recipe
-            key={recipe.id}
-            id={recipe.id}
-            title={recipe.title}
-            image={recipe.img}
-            clicked={() => this.selectedRecipeHandler(recipe.id)}
-          />
-        );
-      });
+      finalRecipes = allRecipes.map(recipe => (
+        <Recipe
+          key={recipe.id}
+          id={recipe.id}
+          title={recipe.title}
+          image={recipe.img}
+          clicked={() => this.selectedRecipeHandler(recipe.id)}
+        />
+      ));
     }
 
 
@@ -97,7 +89,8 @@ class Recipes extends Component {
         <section className={classes.Recipes}>
           {finalRecipes}
         </section>
-      </div >);
+      </div>
+    );
   }
 }
 
@@ -114,12 +107,13 @@ const mapDispatchToProps = dispatch => ({
 });
 
 Recipes.propTypes = {
-  recipes: PropTypes.instanceOf(Array),
-  recipesError: PropTypes.object,
+  recipes: PropTypes.instanceOf(Array).isRequired,
+  recipesError: PropTypes.instanceOf(Object).isRequired,
   filter: PropTypes.string.isRequired,
   APIrecipes: PropTypes.func.isRequired,
   storeRecipesError: PropTypes.func.isRequired,
-  propsFilter: PropTypes.string,
+  propsFilter: PropTypes.string.isRequired,
+  history: PropTypes.instanceOf(Object).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Recipes);

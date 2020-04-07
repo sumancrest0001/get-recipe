@@ -22,4 +22,6 @@ const storeRecipeFail = recipeError => ({
   recipeError,
 });
 
-export { storeRecipes, filterRecipes, storeRecipe, storeRecipeFail, storeRecipesFail };
+export {
+  storeRecipes, filterRecipes, storeRecipe, storeRecipeFail, storeRecipesFail,
+};

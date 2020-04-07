@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Recipes from '../Recipes/Recipes';
@@ -9,20 +9,26 @@ import { filterRecipes } from '../../action/index';
 import FullRecipe from '../FullRecipe/FullRecipe';
 
 const mainPage = ({ categoryFilter }) => {
-  const categoryHandler = (filterValue) => {
+  const categoryHandler = filterValue => {
     categoryFilter(filterValue);
   };
   return (
     <div className={classes.MainPage}>
       <FilterCategory clicked={categoryHandler} />
-      <Switch>
-        <Route path='/'
-          exact
-          render={(props) => <Recipes {...props} propsFilter={'All'} />} />
-        <Route path='/recipes/:id' component={FullRecipe} />
-        <Route path='/category/:category'
-          render={(props) => <Recipes {...props} propsFilter={null} />} />
-      </Switch>
+
+      <Route
+        path="/"
+        exact
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        render={props => <Recipes {...props} propsFilter="All" />}
+      />
+      <Route path="/recipes/:id" component={FullRecipe} />
+      <Route
+        path="/category/:category"
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        render={props => <Recipes {...props} propsFilter={null} />}
+      />
+
     </div>
   );
 };
@@ -37,4 +43,3 @@ mainPage.propTypes = {
 
 
 export default connect(null, mapDispatchToProps)(mainPage);
-
