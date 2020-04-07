@@ -1,34 +1,30 @@
 import React from 'react';
+import Select from 'react-select';
+import { withRouter, NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classes from './FilterCategory.module.css';
 
-
-const filterCategory = ({ display, clicked }) => {
-  const category = ['Very fast', 'Fast', 'Normal', 'Long', 'Very long'];
-  const filterHandler = event => {
-    console.log(event.target.value);
-    clicked(event.target.value);
+const filterCategory = (props) => {
+  const { clicked, history } = props;
+  const category = ['Veryfast', 'Fast', 'Normal', 'Long', 'Verylong', 'All'];
+  const options = []
+  category.map(ele => options.push({ value: ele, label: ele }));
+  const filterHandler = selectedOption => {
+    clicked(selectedOption.value);
+    history.push('/category/' + selectedOption.value);
   };
-  let dropdown = null;
-  if (display)
-    dropdown = <div>
-      <select id="category" className={classes.Category} onChange={filterHandler}>
-        {
-          [...category, 'All'].map(option => (
-            <option
-              key={option}
-              value={option}
-            >
-              {option}
-            </option>
-          ))
-        }
-      </select>
-    </div>;
+  const dropdown = <div><Select
+    id="category"
+    className={classes.Category}
+    defaultValue={{ label: 'Choose cooking time', value: 0 }}
+    onChange={filterHandler}
+    options={options}
+  />
+  </div >;
 
   return (
     <div className={classes.Filter}>
-      <div className={classes.GetRecipes}>Get Recipes</div>
+      <div className={classes.GetRecipes}><NavLink to='/' exact>Get Recipes</NavLink></div>
       <div className={classes.Quote}>GOOD FOOD, GOOD MOOD</div>
       {dropdown}
     </div>
@@ -36,7 +32,6 @@ const filterCategory = ({ display, clicked }) => {
 };
 
 filterCategory.propTypes = {
-  display: PropTypes.bool.isRequired,
   clicked: PropTypes.func.isRequired,
 }
-export default filterCategory;
+export default withRouter(filterCategory);

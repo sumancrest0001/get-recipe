@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import key from '../../config';
 import DirectionButton from '../../components/DirectionButtons/DirectionButton';
 import FilterCategory from '../../components/FilterCategory/FilterCategory';
+import { storeRecipe, storeRecipeFail } from '../../action';
 import classes from './FullRecipe.module.css';
 
 class FullRecipe extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      recipeDetails: null,
-    }
-  }
   changeCookingTime(time) {
     if (time < 60) {
       return (`${time} minutes`)
@@ -33,9 +29,10 @@ class FullRecipe extends Component {
   }
 
   componentDidMount() {
-    if (this.props.id) {
-      console.log(this.props.id);
-      axios.get(`https://api.spoonacular.com/recipes/${this.props.id}/information?apiKey=${key}`)
+    const { storeFullRecipe, storeRecipeError, match } = this.props;
+    console.log(this.props);
+    if (this.props.match.params.id) {
+      axios.get(`https://api.spoonacular.com/recipes/${this.props.match.params.id}/information?apiKey=${key}`)
         .then(response => {
           const recipe = response.data;
           console.log(recipe);
@@ -49,22 +46,23 @@ class FullRecipe extends Component {
             providerSite: recipe.sourceUrl,
             categoryTags: recipe.dishTypes.join(', '),
           };
-          this.setState({ recipeDetails: fullRecipe });
+          storeFullRecipe(fullRecipe);
         })
         .catch(error => {
-          console.log(error);
+          storeRecipeError(error);
         });
     }
   }
 
   render() {
-    let recipe = <p> Wel Come to the fullrecipe page</p>
-    if (this.props.id) {
-      recipe = <p>Please keep patience. Recipe is Loading .........</p>
+    const { recipe, recipeError } = this.props;
+    let renderRecipe = <p>Please keep patience. Recipe is Loading .........</p>;
+    if (recipeError) {
+      renderRecipe = <p>OOPS!!! There is an error</p>;
     }
-    if (this.state.recipeDetails) {
-      const { id, image, title, provider, servings, cookingTime, categoryTags, providerSite } = this.state.recipeDetails;
-      recipe =
+    if (recipe) {
+      const { id, image, title, provider, servings, cookingTime, categoryTags, providerSite } = recipe;
+      renderRecipe =
         (<div className={classes.FullRecipe}>
           <img
             src={image}
@@ -80,16 +78,31 @@ class FullRecipe extends Component {
     }
     return (
       <div>
-        <FilterCategory display={false} />
-        {recipe}
+        {renderRecipe}
       </div>
 
     )
   }
 }
 
+const mapStateToProps = state => ({
+  recipe: state.recipe.recipe,
+  recipeError: state.recipe.recipeError,
+});
+
+const mapDispatchToProps = dispatch => ({
+  storeFullRecipe: recipes => { dispatch(storeRecipe(recipes)); },
+  storeRecipeError: error => { dispatch(storeRecipeFail(error)); },
+});
+
+
 
 FullRecipe.propTypes = {
   id: PropTypes.string.isRequired,
+  recipe: PropTypes.object,
+  recipeError: PropTypes.object,
+  storeFullRecipe: PropTypes.func.isRequired,
+  storeRecipeError: PropTypes.func.isRequired,
 };
-export default FullRecipe;
+
+export default connect(mapStateToProps, mapDispatchToProps)(FullRecipe);

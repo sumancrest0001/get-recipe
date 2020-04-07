@@ -1,26 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Recipe from '../../components/Recipe/Recipe';
+import FullRecipe from '../FullRecipe/FullRecipe';
 import key from '../../config';
 import { storeRecipes, storeRecipesFail } from '../../action';
 import classes from './Recipes.module.css';
 
 class Recipes extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   selectedRecipeHandler = (id) => {
     // programmatic routing
     this.props.history.push('/recipes/' + id);
   }
 
   changeReadyTime(time) {
-    console.log(time);
     if (time <= 15) {
-      return 'Very fast';
+      return 'Veryfast';
     }
     if (time > 15 && time <= 30) {
       return 'Fast';
@@ -34,7 +31,7 @@ class Recipes extends Component {
     }
 
     if (time > 120) {
-      return 'Very long';
+      return 'Verylong';
     } else {
       return time;
     }
@@ -43,6 +40,7 @@ class Recipes extends Component {
 
   componentDidMount() {
     const { APIrecipes, storeRecipesError } = this.props;
+    console.log(this.props);
     axios.get(`https://api.spoonacular.com/recipes/search?number=20&apiKey=${key}&query=foods`)
       .then(response => {
         const recipes = response.data.results;
@@ -61,23 +59,24 @@ class Recipes extends Component {
 
 
   filterRecipes = () => {
-    const { recipes, filter } = this.props;
+    const { recipes, filter, propsFilter } = this.props;
     let allRecipes;
-    if (filter === 'All') {
+    const finalFilter = propsFilter !== null ? propsFilter : filter;
+    if (finalFilter === 'All') {
       allRecipes = recipes;
     } else {
-      allRecipes = recipes.filter(recipe => recipe.cookingPeriod === filter);
+      allRecipes = recipes.filter(recipe => recipe.cookingTime === finalFilter);
     }
     return allRecipes;
   };
 
   render() {
-    const { recipesError } = this.props;
+    const { recipes, recipesError } = this.props;
     let finalRecipes = <p>Content is loading........</p>
     if (recipesError) {
       finalRecipes = <p>Something went wrong</p>;
     }
-    if (recipesError === null) {
+    if (recipes) {
       const allRecipes = this.filterRecipes();
       finalRecipes = allRecipes.map(recipe => {
         return (
@@ -98,7 +97,6 @@ class Recipes extends Component {
         <section className={classes.Recipes}>
           {finalRecipes}
         </section>
-        {/* <Route path={this.props.match.url + "/:id"} exact component={FullRecipe} /> */}
       </div >);
   }
 }
@@ -117,10 +115,11 @@ const mapDispatchToProps = dispatch => ({
 
 Recipes.propTypes = {
   recipes: PropTypes.instanceOf(Array),
-  recipesError: PropTypes.string,
+  recipesError: PropTypes.object,
   filter: PropTypes.string.isRequired,
   APIrecipes: PropTypes.func.isRequired,
   storeRecipesError: PropTypes.func.isRequired,
+  propsFilter: PropTypes.string,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Recipes);
