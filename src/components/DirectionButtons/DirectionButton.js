@@ -7,7 +7,11 @@ const directionButton = ({ providerLink }) => (
 );
 
 directionButton.propTypes = {
-  providerLink: PropTypes.string.isRequired,
+  providerLink: PropTypes.string,
+};
+
+directionButton.defaultProps = {
+  providerLink: ' ',
 };
 
 export default directionButton;

@@ -67,6 +67,7 @@ class FullRecipe extends Component {
           <h3>{title}</h3>
           <p>
             <b>Producer:</b>
+            {' '}
             {provider}
           </p>
           <p>
@@ -109,7 +110,6 @@ const mapDispatchToProps = dispatch => ({
 
 
 FullRecipe.propTypes = {
-  id: PropTypes.string.isRequired,
   recipe: PropTypes.instanceOf(Object).isRequired,
   recipeError: PropTypes.instanceOf(Object).isRequired,
   storeFullRecipe: PropTypes.func.isRequired,

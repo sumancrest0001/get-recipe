@@ -1,4 +1,9 @@
-const recipeReducer = (state = [], action) => {
+const initialState = {
+  recipe: [],
+  recipeError: {},
+};
+
+const recipeReducer = (state = initialState, action) => {
   switch (action.type) {
     case ('STORE_RECIPE_SUCCEED'):
       return {

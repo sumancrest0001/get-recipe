@@ -9,21 +9,25 @@ import classes from './Recipes.module.css';
 
 class Recipes extends Component {
   componentDidMount() {
-    const { APIrecipes, storeRecipesError } = this.props;
-    axios.get(`https://api.spoonacular.com/recipes/search?number=20&apiKey=${key}&query=foods`)
-      .then(response => {
-        const recipes = response.data.results;
-        const updatedrecipes = recipes.map(updatedrecipe => ({
-          id: updatedrecipe.id,
-          title: updatedrecipe.title,
-          img: updatedrecipe.image,
-          cookingTime: this.changeReadyTime(updatedrecipe.readyInMinutes),
-        }));
-        APIrecipes(updatedrecipes);
-      })
-      .catch(error => {
-        storeRecipesError(error);
-      });
+    const { recipes } = this.props;
+    if (recipes.length === 0) {
+      console.log('ok');
+      const { APIrecipes, storeRecipesError } = this.props;
+      axios.get(`https://api.spoonacular.com/recipes/search?number=20&apiKey=${key}&query=foods`)
+        .then(response => {
+          const recipes = response.data.results;
+          const updatedrecipes = recipes.map(updatedrecipe => ({
+            id: updatedrecipe.id,
+            title: updatedrecipe.title,
+            img: updatedrecipe.image,
+            cookingTime: this.changeReadyTime(updatedrecipe.readyInMinutes),
+          }));
+          APIrecipes(updatedrecipes);
+        })
+        .catch(error => {
+          storeRecipesError(error);
+        });
+    }
   }
 
   selectedRecipeHandler = id => {
@@ -55,7 +59,7 @@ class Recipes extends Component {
   filterRecipes = () => {
     const { recipes, filter, propsFilter } = this.props;
     let allRecipes;
-    const finalFilter = propsFilter !== null ? propsFilter : filter;
+    const finalFilter = propsFilter !== ' ' ? propsFilter : filter;
     if (finalFilter === 'All') {
       allRecipes = recipes;
     } else {
@@ -85,11 +89,9 @@ class Recipes extends Component {
 
 
     return (
-      <div>
-        <section className={classes.Recipes}>
-          {finalRecipes}
-        </section>
-      </div>
+      <section className={classes.Recipes}>
+        {finalRecipes}
+      </section>
     );
   }
 }

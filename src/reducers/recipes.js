@@ -1,6 +1,6 @@
 const initialState = {
   recipes: [],
-  recipesError: null,
+  recipesError: {},
 };
 
 const recipesReducer = (state = initialState, action) => {

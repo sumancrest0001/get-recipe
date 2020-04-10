@@ -26,7 +26,7 @@ const mainPage = ({ categoryFilter }) => {
       <Route
         path="/category/:category"
         // eslint-disable-next-line react/jsx-props-no-spreading
-        render={props => <Recipes {...props} propsFilter={null} />}
+        render={props => <Recipes {...props} propsFilter=" " />}
       />
 
     </div>

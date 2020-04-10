@@ -16,7 +16,6 @@ const filterCategory = props => {
   const dropdown = (
     <div>
       <Select
-        id="category"
         className={classes.Category}
         defaultValue={{ label: 'Choose cooking time', value: 0 }}
         onChange={filterHandler}
