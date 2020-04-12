@@ -7,11 +7,10 @@ import key from '../../config';
 import { storeRecipes, storeRecipesFail } from '../../action';
 import classes from './Recipes.module.css';
 
-class Recipes extends Component {
+export class Recipes extends Component {
   componentDidMount() {
     const { recipes } = this.props;
     if (recipes.length === 0) {
-      console.log('ok');
       const { APIrecipes, storeRecipesError } = this.props;
       axios.get(`https://api.spoonacular.com/recipes/search?number=20&apiKey=${key}&query=foods`)
         .then(response => {

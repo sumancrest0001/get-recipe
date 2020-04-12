@@ -13,6 +13,7 @@ const filterCategory = props => {
     clicked(selectedOption.value);
     history.push(`/category/${selectedOption.value}`);
   };
+
   const dropdown = (
     <div>
       <Select
@@ -26,7 +27,7 @@ const filterCategory = props => {
 
   return (
     <div className={classes.Filter}>
-      <div className={classes.GetRecipes}><NavLink to="/" exact>Get Recipes</NavLink></div>
+      <NavLink to="/" exact><div className={classes.GetRecipes}>Get Recipes</div></NavLink>
       <div className={classes.Quote}>GOOD FOOD, GOOD MOOD</div>
       {dropdown}
     </div>
@@ -37,4 +38,5 @@ filterCategory.propTypes = {
   clicked: PropTypes.func.isRequired,
   history: PropTypes.instanceOf(Object).isRequired,
 };
+
 export default withRouter(filterCategory);

@@ -7,7 +7,7 @@ import DirectionButton from '../../components/DirectionButtons/DirectionButton';
 import { storeRecipe, storeRecipeFail } from '../../action';
 import classes from './FullRecipe.module.css';
 
-class FullRecipe extends Component {
+export class FullRecipe extends Component {
   componentDidMount() {
     const {
       storeFullRecipe, storeRecipeError, match, recipe,
