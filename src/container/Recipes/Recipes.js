@@ -7,7 +7,7 @@ import key from '../../config';
 import { storeRecipes, storeRecipesFail } from '../../action';
 import classes from './Recipes.module.css';
 
-export class Recipes extends Component {
+class Recipes extends Component {
   componentDidMount() {
     const { recipes } = this.props;
     if (recipes.length === 0) {
