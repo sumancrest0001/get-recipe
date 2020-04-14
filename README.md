@@ -2,6 +2,7 @@
 
 This is a react capstone project from the microverse curriculum. It is a API based project where you can get details of any recipe and can also filter recipes based on cooking time.
 
+## [Live Demo](https://get-recipe-app.herokuapp.com/)
 
 ## Features of the project
 - Used API to get recipes from a public API using axios.
