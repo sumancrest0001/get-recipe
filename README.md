@@ -11,10 +11,11 @@ This is a react capstone project from the microverse curriculum. It is a API bas
 - We can filter recipes.
 - Get details of a recipe and its supplier details.
 
-## Languages used
+## Languages and packages used
 - React
 - Redux
 - CSS modules
+- Jest and enzyme
 
 ## How to install the project?
 - Clone the repository 'git clone https://github.com/sumancrest0001/get-recipe'
